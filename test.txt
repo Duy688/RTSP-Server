@@ -1,0 +1,1 @@
+ffmpeg -hide_banner -loglevel warning -stream_loop -1 -re -fflags +genpts -i "/home/quantumserver/Products/RTSP/fake-rtsp/videos_clean/cam0.mp4" -an -sn -dn -c:v copy -rtsp_transport tcp -f rtsp "rtsp://127.0.0.1:8554/cam0"

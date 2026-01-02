@@ -1,0 +1,10 @@
+logLevel: info
+
+protocols: [tcp]   # dùng TCP cho ổn định LAN
+
+readTimeout: 60s
+writeTimeout: 60s
+
+paths:
+  all:
+    source: publisher   # path nào ffmpeg đẩy lên cũng được

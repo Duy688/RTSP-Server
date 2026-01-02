@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  # RTSP server
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: mediamtx
+    restart: unless-stopped
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+    ports:
+      - "8554:8554"
+
+  # Bước 2 – chuẩn hoá tất cả file _clean.mp4 (chạy 1 lần)
+  preprocess:
+    image: lscr.io/linuxserver/ffmpeg:latest
+    container_name: preprocess_all
+    volumes:
+      - ./videos_raw:/videos_raw:ro
+      - ./videos_clean:/videos_clean
+      - ./scripts:/scripts:ro
+    entrypoint: ["/bin/bash", "/scripts/preprocess_all.sh"]
+
+  # Streamer – 1 container, chạy nhiều ffmpeg (1 process / camera)
+  streamer:
+    image: lscr.io/linuxserver/ffmpeg:latest
+    container_name: fake_cams_streamer
+    depends_on:
+      - mediamtx
+    restart: unless-stopped
+    volumes:
+      - ./videos_clean:/videos_clean:ro
+      - ./scripts:/scripts:ro
+    entrypoint: ["/bin/bash", "/scripts/run_cams.sh"]

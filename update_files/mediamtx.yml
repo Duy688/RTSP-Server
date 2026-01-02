@@ -1,0 +1,14 @@
+logLevel: info
+
+# RTSP server listens here
+rtspAddress: :8554
+
+# Prefer TCP for stability on LAN
+protocols: [tcp]
+
+readTimeout: 60s
+writeTimeout: 60s
+
+paths:
+  all:
+    source: publisher

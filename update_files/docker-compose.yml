@@ -1,0 +1,25 @@
+services:
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: mediamtx
+    ports:
+      - "8554:8554/tcp"
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+    restart: unless-stopped
+
+  # Publishes video files in ./videos_clean as RTSP streams to MediaMTX
+  publisher:
+    image: ghcr.io/linuxserver/ffmpeg:latest
+    container_name: rtsp-publisher
+    depends_on:
+      - mediamtx
+    volumes:
+      - ./videos_clean:/videos_clean:ro
+      - ./run_cams.sh:/run_cams.sh:ro
+    environment:
+      VIDEO_DIR: /videos_clean
+      RTSP_BASE: rtsp://mediamtx:8554
+      START_GAP_SEC: "0.2"
+    entrypoint: ["/bin/bash", "/run_cams.sh"]
+    restart: unless-stopped

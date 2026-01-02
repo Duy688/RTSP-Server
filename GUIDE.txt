@@ -1,0 +1,19 @@
+B1:
+- docker compose run --rm preprocess # dùng cho việc clean file input video
+
+sau đó sẽ nhận được các video trong thư mục videos_clean
+- bao giờ clean video xong thì sẽ ra dòng này: 
+    +   ">>> Preprocess xong."
+
+B2:
+- docker compose up -d mediamtx streamer
+
+B3:
+- Mở vlc và xem
+
+ex:
+    + rtsp://127.0.0.1:8554/cam1
+    + rtsp://127.0.0.1:8554/cam2
+    + rtsp://127.0.0.1:8554/cam3
+
+Note: Nếu đã host bằng ipwan thì thay ip local = ip wan
